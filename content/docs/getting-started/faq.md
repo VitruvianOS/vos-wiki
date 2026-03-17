@@ -9,7 +9,7 @@ weight: 4
 
 ## What is VitruvianOS?
 
-VitruvianOS (V\OS) is an operating system based on Linux, inspired by BeOS. It runs the Haiku/BeOS desktop and API on top of a real-time patched Linux kernel, with custom kernel modules — collectively called **Nexus** — providing the missing BeOS-style system services.
+VitruvianOS (V\OS) is an operating system based on Linux, inspired by BeOS. It runs the BeOS/Haiku desktop and API on top of a real-time patched Linux kernel, with custom kernel modules — collectively called **Nexus** — providing the missing BeOS-style system services.
 
 See the [Nexus reference page]({{< relref "/docs/reference/nexus" >}}) for details on the kernel bridge.
 
@@ -29,19 +29,30 @@ Haiku is a complete from-scratch reimplementation of BeOS that runs its own kern
 
 ## How mature is the API compatibility?
 
-The core kits (Application, Interface, Storage, Support) are functional enough to run meaningful Haiku applications with little or no source changes. Some kits are further along than others. The [API Changes]({{< relref "/docs/development/api-changes" >}}) page tracks known gaps and deviations from the Haiku API.
+The core kits (Application, Interface, Storage, Support) are functional enough to run meaningful BeOS/Haiku applications with little or no source changes. Some kits are further along than others. The [API Changes]({{< relref "/docs/development/api-changes" >}}) page tracks known gaps and deviations from the BeOS/Haiku API.
 
 ---
 
 ## Is there a package manager?
 
-Not yet. The system currently ships as a complete image. A package management story is on the roadmap but not a current priority.
+Yes — Vitruvian ships as a Debian-derived image, so **apt** is available for installing packages from Debian repositories alongside native Vitruvian software.
+
+---
+
+## What filesystems are supported for booting?
+
+The reference boot filesystems are **XFS** and **SquashFS**, both with full extended attribute support:
+
+- **XFS** is the reference filesystem for standard desktop installs
+- **SquashFS** is the reference filesystem for live images, live CDs, and embedded targets
+
+Vitruvian will also boot from **ext4** and most other Linux-supported filesystems that provide extended attribute support, but XFS and SquashFS are the primary tested and recommended options.
 
 ---
 
 ## Will it run in a virtual machine?
 
-Yes. Running in QEMU or VirtualBox is the recommended way to test during development. See [Virtualization]({{< relref "/docs/getting-started/virtualization" >}}) for setup notes.
+Yes. Running in QEMU is the recommended way to test during development. See [Virtualization]({{< relref "/docs/getting-started/virtualization" >}}) for platform-specific setup guides.
 
 ---
 
@@ -53,13 +64,13 @@ Vitruvian targets x86-64, ARM, and RISC-V. x86-64 is the primary development pla
 
 ## Can I contribute without being a kernel developer?
 
-Absolutely. There is useful work at every level — porting or fixing Haiku applications, improving the desktop experience, writing documentation, testing on real hardware and filing issues, or helping with the website and wiki. Jump in on [Telegram](https://t.me/vitruvian_official_chat) and ask where help is most needed.
+Absolutely. There is useful work at every level — porting or fixing BeOS/Haiku applications, improving the desktop experience, writing documentation, testing on real hardware and filing issues, or helping with the website and wiki. Jump in on [Telegram](https://t.me/vitruvian_official_chat) and ask where help is most needed.
 
 ---
 
 ## What is Nexus?
 
-Nexus is the set of custom Linux kernel modules that bridge Linux with the BeOS/Haiku runtime. It provides node monitoring (filesystem event notifications), device and volume tracking, and routes kernel events to the BeOS messaging subsystem in userspace. See the [Nexus]({{< relref "/docs/reference/nexus" >}}) page.
+Nexus is the set of custom Linux kernel modules that bridge Linux with the BeOS/Haiku runtime. It provides node monitoring (filesystem event notifications), device and volume tracking, and routes kernel events to the BeOS/Haiku messaging subsystem in userspace. See the [Nexus]({{< relref "/docs/reference/nexus" >}}) page.
 
 ---
 
@@ -77,7 +88,14 @@ Yes — see the [Donate]({{< relref "/docs/reference/donate" >}}) page. Every bi
 
 ## Can I send hardware to the developers?
 
-If you have hardware you'd like to donate for testing and development — particularly machines with unusual GPUs, wireless cards, or other components that are hard to test remotely — reach out on [Telegram](https://t.me/vitruvian_official_chat) first to coordinate. We will confirm a shipping address directly.
+Hardware donations for testing and development are very welcome. Particularly useful:
+
+- **ARM single-board computers** — Raspberry Pi 4/5, Orange Pi, Rock Pi, and similar
+- **RISC-V boards** — any development board running a recent Linux kernel
+- **Laptops** — not-so-old x86-64 laptops (ThinkPads, Dell, HP from the last ~6 years work well) with varied GPU and wireless hardware
+- **Desktops or workstations** with unusual or niche GPU/NIC combinations that are hard to test remotely
+
+Reach out on [Telegram](https://t.me/vitruvian_official_chat) first to coordinate. We will confirm a shipping address directly.
 
 ---
 

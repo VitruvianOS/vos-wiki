@@ -9,7 +9,7 @@ Nexus is the VitruvianOS kernel subsystem that bridges the Linux kernel with the
 
 ## Purpose
 
-BeOS and Haiku expose a set of kernel APIs that have no direct equivalent in Linux. Nexus implements these APIs as thin kernel modules, allowing the Vitruvian userspace — including the Haiku API compatibility layer — to run on an otherwise standard Linux kernel.
+BeOS and Haiku expose a set of kernel APIs that have no direct equivalent in Linux. Nexus implements these APIs as thin kernel modules, allowing the Vitruvian userspace — including the BeOS/Haiku API compatibility layer — to run on an otherwise standard Linux kernel.
 
 ## Components
 
