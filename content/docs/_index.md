@@ -8,6 +8,6 @@ Welcome to the VitruvianOS wiki. Use the sidebar to navigate, or jump to a secti
 
 ## Sections
 
-- [Getting Started]({{< relref "getting-started" >}}) — build instructions, installation, virtualization
-- [Development]({{< relref "development" >}}) — coding guidelines, API changes, filesystem layout
-- [Reference]({{< relref "reference" >}}) — legacy BeOS/Haiku documentation, Nexus, donations
+- [Getting Started](getting-started/) — build instructions, installation, virtualization
+- [Development](development/) — coding guidelines, API changes, filesystem layout
+- [Reference](reference/) — legacy BeOS/Haiku documentation, Nexus, donations
