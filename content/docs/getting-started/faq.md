@@ -46,7 +46,7 @@ The reference boot filesystems are **XFS** and **SquashFS**, both with full exte
 - **XFS** is the reference filesystem for standard desktop installs
 - **SquashFS** is the reference filesystem for live images, live CDs, and embedded targets
 
-Vitruvian will also boot from **ext4** and most other Linux-supported filesystems that provide extended attribute support, but XFS and SquashFS are the primary tested and recommended options.
+Vitruvian will also boot from **ext4** and most other Linux-supported filesystems that provide extended attribute support, but XFS and SquashFS are the primary tested and recommended options. Even without attributes, the system should be able to boot, albeit with limited capabilities.
 
 ---
 
