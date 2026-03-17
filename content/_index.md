@@ -6,7 +6,7 @@ title: "VitruvianOS Wiki"
 
 Documentation for developers and contributors.
 
-VitruvianOS is an operating system based on Linux, inspired by BeOS. This wiki contains build instructions, developer references, and technical documentation.
+Vitruvian (VitruvianOS / V\OS) is an operating system based on Linux, inspired by BeOS. This wiki contains build instructions, developer references, and technical documentation.
 
 ## Sections
 
