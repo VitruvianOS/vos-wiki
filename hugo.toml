@@ -10,6 +10,7 @@ defaultContentLanguage = "en"
   BookToC = true
   BookMenuBundle = false
   BookEditPath = "wiki"
+  BookFavicon = "favicon.svg"
 
 [[menu.before]]
   name = "Home"
