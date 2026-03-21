@@ -15,7 +15,7 @@ BeOS and Haiku expose a set of kernel APIs that have no direct equivalent in Lin
 
 ### Node Monitor
 
-The node monitor is the core of Nexus. It provides filesystem event notifications equivalent to the BeOS `node_monitor` API:
+The node monitor is one of the core functionalities of Nexus. It provides filesystem event notifications equivalent to the BeOS `node_monitor` API:
 
 - `B_ENTRY_CREATED` — a new file or directory was created
 - `B_ENTRY_REMOVED` — a file or directory was removed
@@ -36,9 +36,8 @@ Events generated inside the kernel are routed to the VitruvianOS messaging subsy
 
 ## Source
 
-Nexus lives under `src/system/kernel/nexus/` in the [VitruvianOS repository](https://github.com/VitruvianOS/Vitruvian).
+Nexus has its own repository at [github.com/Numerio/Nexus](https://github.com/Numerio/Nexus) and is included as a submodule in the [VitruvianOS repository](https://github.com/VitruvianOS/Vitruvian).
 
 ## Further Reading
 
-- [Node Monitoring — Haiku Book](https://www.haiku-os.org/docs/api/group__node__monitor.html)
 - [Building VitruvianOS](../getting-started/building/)
