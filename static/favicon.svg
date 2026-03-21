@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <!-- Orbit 1: tilted -35° -->
-  <ellipse cx="32" cy="32" rx="25" ry="9.5" fill="none" stroke="#cc3311" stroke-width="3" transform="rotate(-35 32 32)"/>
+  <ellipse cx="32" cy="32" rx="25" ry="9.5" fill="none" stroke="#cc1111" stroke-width="3" transform="rotate(-35 32 32)"/>
   <!-- Orbit 2: tilted +55° (roughly perpendicular) -->
-  <ellipse cx="32" cy="32" rx="25" ry="9.5" fill="none" stroke="#cc3311" stroke-width="3" transform="rotate(55 32 32)"/>
-  <!-- Nucleus -->
-  <circle cx="32" cy="32" r="6" fill="#cc1111"/>
-  <!-- Electron 1: on orbit 1, upper-right area -->
-  <circle cx="51" cy="21" r="4.5" fill="#ffa800"/>
-  <!-- Electron 2: on orbit 2, upper-left area -->
-  <circle cx="13" cy="21" r="4.5" fill="#ffa800"/>
+  <ellipse cx="32" cy="32" rx="25" ry="9.5" fill="none" stroke="#cc1111" stroke-width="3" transform="rotate(55 32 32)"/>
+  <!-- Nucleus: Haiku/VitruvianOS window tab color -->
+  <circle cx="32" cy="32" r="6" fill="#ffcb00"/>
+  <!-- Electron 1: upper-right -->
+  <circle cx="51" cy="21" r="4.5" fill="#0055cc"/>
+  <!-- Electron 2: upper-left -->
+  <circle cx="13" cy="21" r="4.5" fill="#0055cc"/>
 </svg>
