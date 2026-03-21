@@ -21,6 +21,15 @@ The project is in active development and experimental. Core components (Deskbar,
 
 ---
 
+## What's coming next?
+
+The most significant features planned for upcoming releases:
+
+- **Filesystem indexing and live queries** — a hallmark of the original BeOS experience, enabling real-time file search and dynamic query results across the filesystem
+- **Multiuser support with graphical login** — full multi-user isolation with a dedicated login screen, per-user home directories, and session management
+
+---
+
 ## How is it different from Haiku?
 
 Haiku is a complete from-scratch reimplementation of BeOS that runs its own kernel. Vitruvian runs on the Linux kernel instead, which means it inherits Linux's hardware support, driver ecosystem, and security model. The goal is full BeOS/Haiku API compatibility on top of that foundation — the best of both worlds.
