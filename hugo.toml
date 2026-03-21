@@ -1,4 +1,4 @@
-baseURL = "https://vos-wiki.vitruvian.test/"
+baseURL = "https://wiki.v-os.dev/"
 title = "VitruvianOS Wiki"
 theme = "hugo-book"
 defaultContentLanguage = "en"
