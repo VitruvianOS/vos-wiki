@@ -7,7 +7,7 @@ weight: 4
 
 ---
 
-## What is VitruvianOS?
+## What is Vitruvian?
 
 VitruvianOS (V\OS) is an operating system based on Linux, inspired by BeOS. It runs the BeOS/Haiku desktop and API on top of a real-time patched Linux kernel, with custom kernel modules — collectively called **Nexus** — providing the missing BeOS-style system services.
 

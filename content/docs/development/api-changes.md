@@ -5,7 +5,7 @@ weight: 2
 
 # API Changes
 
-Differences between the VitruvianOS native API and BeOS/Haiku.
+Differences between the Vitruvian native APIs and BeOS/Haiku.
 
 ## Images
 

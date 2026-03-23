@@ -5,7 +5,7 @@ weight: 1
 
 # Building
 
-How to compile VitruvianOS from source on a Debian-based system.
+How to compile Vitruvian from source on a Debian-based system.
 
 ## Prerequisites
 

@@ -5,7 +5,7 @@ weight: 3
 
 # Filesystem Layout
 
-VitruvianOS runs on a standard Linux filesystem hierarchy, but maps BeOS/Haiku path conventions onto it so that application source code written for BeOS or Haiku compiles and runs without path changes.
+Vitruvian runs on a standard Linux filesystem hierarchy, but maps BeOS/Haiku path conventions onto it so that application source code written for BeOS or Haiku compiles and runs without path changes.
 
 ## Boot Filesystem
 
@@ -15,7 +15,7 @@ The reference boot filesystems are **XFS** (standard desktop installs) and **Squ
 
 BeOS and Haiku expose their filesystem tree under `/boot`. In VitruvianOS, `/boot` maps directly to the Linux root `/`, rather than to a separate `/system` subtree:
 
-| BeOS/Haiku path | VitruvianOS path |
+| BeOS/Haiku path | Vitruvian path |
 |-----------------|-----------------|
 | `/boot` | `/` |
 | `/boot/home` | `/home` |
@@ -27,7 +27,7 @@ Standard Linux paths (`/usr`, `/lib`, `/etc`, `/proc`, `/dev`, and so on) coexis
 
 ## Extended Attributes
 
-BeOS relies heavily on filesystem extended attributes for file metadata, MIME types, application signatures, and the attribute database that powers live queries. VitruvianOS stores these as Linux extended attributes (`xattr`). XFS is the recommended boot filesystem because it has no practical per-file xattr size limit, which matches BeOS behavior most closely.
+BeOS relies heavily on filesystem extended attributes for file metadata, MIME types, application signatures, and the attribute database that powers live queries. Vitruvian stores these as Linux extended attributes (`xattr`). XFS is the recommended boot filesystem because it has no practical per-file xattr size limit, which matches BeOS behavior most closely.
 
 {{< hint info >}}
 More detail on individual directories and the attribute namespace is coming.
