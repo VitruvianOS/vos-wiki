@@ -99,10 +99,10 @@ The `configure` script accepts the following options:
 | `--chroot-build` | off | Build against the chroot sysroot instead of host libraries |
 | `--chroot-path=PATH` | `<build>/image_tree/chroot` | Override the chroot path (requires `--chroot-build`) |
 
-Example — release build:
+Example — release build with chroot:
 
 ```bash
-../configure --build-type=Release
+../configure --build-type=Release --chroot-build
 ```
 
 ### Architectures
@@ -118,16 +118,16 @@ x86_64 is selected by default. To make the selection explicit:
 ../configure --arch=x86_64
 ```
 
-### Host build (without chroot)
+### Development build (without image)
 
-To build against the host system's libraries directly, omit `--chroot-build`:
+If you only need to build and run Vitruvian locally without creating a bootable image, you can skip `setupenv.sh` and configure directly against the host libraries:
 
 ```bash
 ../configure
 ninja
 ```
 
-This requires all `-dev` packages to be installed on the host.
+This requires the relevant `-dev` packages installed on the host.
 
 To use a chroot at a custom path:
 
