@@ -84,7 +84,7 @@ cd ../generated.x86 && ../build/scripts/setupenv.sh
 ninja
 ```
 
-`setupenv.sh` uses `debootstrap` to bootstrap a minimal Debian Trixie (amd64) environment under `generated.x86/LIVE_BOOT/chroot`. It installs both the base live-boot packages and all required `-dev` packages inside the chroot, and writes `imagekernelversion.conf` with the chroot's kernel version. This chroot is also the live image that gets packed into the ISO/raw image later.
+`setupenv.sh` uses `debootstrap` to bootstrap a minimal Debian Trixie (amd64) environment under `generated.x86/image_tree/chroot`. It installs both the base live-boot packages and all required `-dev` packages inside the chroot, and writes `imagekernelversion.conf` with the chroot's kernel version. This chroot is also the live image that gets packed into the ISO/raw image later.
 
 `--chroot-build` tells `configure` to resolve all headers and libraries from the chroot instead of the host, keeping the build fully isolated. The compiler and build tools are always taken from the host.
 
@@ -97,7 +97,7 @@ The `configure` script accepts the following options:
 | `--build-type=TYPE` | `Debug` | CMake build type: `Debug`, `Release`, or `Workflow` |
 | `--arch=ARCH` | `x86_64` | Target architecture (see [Architectures](#architectures)) |
 | `--chroot-build` | off | Build against the chroot sysroot instead of host libraries |
-| `--chroot-path=PATH` | `<build>/LIVE_BOOT/chroot` | Override the chroot path (requires `--chroot-build`) |
+| `--chroot-path=PATH` | `<build>/image_tree/chroot` | Override the chroot path (requires `--chroot-build`) |
 
 Example — release build:
 
