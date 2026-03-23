@@ -44,7 +44,7 @@ The core kits (Application, Interface, Storage, Support) are functional enough t
 
 ## Is there a package manager?
 
-Yes — Vitruvian ships as a Debian-derived image, so **apt** is available for installing packages from Debian repositories alongside native Vitruvian software.
+Yes. Vitruvian ships as a Debian-derived image, so **apt** is the package manager. The plan is to give users access to the full Debian software archive — over 120,000 packages — directly from Vitruvian, alongside native Vitruvian software. If it runs on Debian, it should be installable on Vitruvian.
 
 ---
 

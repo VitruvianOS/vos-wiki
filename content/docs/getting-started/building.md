@@ -71,8 +71,6 @@ git clone https://github.com/VitruvianOS/Vitruvian.git
 
 ## Building VitruvianOS
 
-After cloning, enter the source directory and run:
-
 ```bash
 git submodule update --init --recursive
 mkdir buildtools/ && mkdir generated.x86/
@@ -84,9 +82,9 @@ cd ../generated.x86 && ../build/scripts/setupenv.sh
 ninja
 ```
 
-`setupenv.sh` uses `debootstrap` to bootstrap a minimal Debian Trixie (amd64) environment under `generated.x86/image_tree/chroot`. It installs both the base live-boot packages and all required `-dev` packages inside the chroot, and writes `imagekernelversion.conf` with the chroot's kernel version. This chroot is also the live image that gets packed into the ISO/raw image later.
+`setupenv.sh` uses `debootstrap` to bootstrap a minimal Debian Trixie (amd64) environment under `generated.x86/image_tree/chroot`, installs all required `-dev` packages inside it, and writes `imagekernelversion.conf` with the chroot kernel version. The compiler and build tools are always taken from the host.
 
-`--chroot-build` tells `configure` to resolve all headers and libraries from the chroot instead of the host, keeping the build fully isolated. The compiler and build tools are always taken from the host.
+If you only need to build and run Vitruvian locally without producing an image, you can skip `setupenv.sh` and run `../configure` without `--chroot-build`, building directly against the host libraries instead.
 
 ### configure options
 
@@ -118,22 +116,6 @@ x86_64 is selected by default. To make the selection explicit:
 ../configure --arch=x86_64
 ```
 
-### Development build (without image)
-
-If you only need to build and run Vitruvian locally without creating a bootable image, you can skip `setupenv.sh` and configure directly against the host libraries:
-
-```bash
-../configure
-ninja
-```
-
-This requires the relevant `-dev` packages installed on the host.
-
-To use a chroot at a custom path:
-
-```bash
-../configure --chroot-build --chroot-path=/path/to/chroot
-```
 
 ## Building the .deb Package
 
