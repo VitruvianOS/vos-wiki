@@ -5,7 +5,7 @@ weight: 2
 
 # Nexus
 
-Nexus is the VitruvianOS kernel subsystem that bridges the Linux kernel with the BeOS/Haiku runtime. It is implemented as a set of custom Linux kernel modules loaded at boot.
+Nexus is the Vitruvian kernel subsystem that bridges the Linux kernel with the BeOS/Haiku runtime. It is implemented as a set of custom Linux kernel modules loaded at boot.
 
 ## Purpose
 

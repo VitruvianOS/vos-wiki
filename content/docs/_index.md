@@ -4,7 +4,7 @@ weight: 1
 bookFlatSection: false
 ---
 
-Welcome to the VitruvianOS wiki. Use the sidebar to navigate, or jump to a section below.
+Welcome to the Vitruvian wiki. Use the sidebar to navigate, or jump to a section below.
 
 ## Sections
 
