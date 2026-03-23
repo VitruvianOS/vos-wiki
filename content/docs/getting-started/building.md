@@ -80,8 +80,59 @@ cd buildtools/
 cmake -DBUILDTOOLS_MODE=1 .. -GNinja
 ninja
 cd ../generated.x86 && ../build/scripts/setupenv.sh
+../configure --chroot-build
+ninja
+```
+
+`setupenv.sh` uses `debootstrap` to bootstrap a minimal Debian Trixie (amd64) environment under `generated.x86/LIVE_BOOT/chroot`. It installs both the base live-boot packages and all required `-dev` packages inside the chroot, and writes `imagekernelversion.conf` with the chroot's kernel version. This chroot is also the live image that gets packed into the ISO/raw image later.
+
+`--chroot-build` tells `configure` to resolve all headers and libraries from the chroot instead of the host, keeping the build fully isolated. The compiler and build tools are always taken from the host.
+
+### configure options
+
+The `configure` script accepts the following options:
+
+| Option | Default | Description |
+|---|---|---|
+| `--build-type=TYPE` | `Debug` | CMake build type: `Debug`, `Release`, or `Workflow` |
+| `--arch=ARCH` | `x86_64` | Target architecture (see [Architectures](#architectures)) |
+| `--chroot-build` | off | Build against the chroot sysroot instead of host libraries |
+| `--chroot-path=PATH` | `<build>/LIVE_BOOT/chroot` | Override the chroot path (requires `--chroot-build`) |
+
+Example — release build:
+
+```bash
+../configure --build-type=Release
+```
+
+### Architectures
+
+| Architecture | Status |
+|---|---|
+| `x86_64` | Supported (default) |
+| `arm64` | Not yet supported |
+
+x86_64 is selected by default. To make the selection explicit:
+
+```bash
+../configure --arch=x86_64
+```
+
+### Host build (without chroot)
+
+To build against the host system's libraries directly, omit `--chroot-build`:
+
+```bash
 ../configure
 ninja
+```
+
+This requires all `-dev` packages to be installed on the host.
+
+To use a chroot at a custom path:
+
+```bash
+../configure --chroot-build --chroot-path=/path/to/chroot
 ```
 
 ## Building the .deb Package
