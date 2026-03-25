@@ -27,15 +27,10 @@ If KVM is not available, QEMU will still work but will run slower without hardwa
 
 ```bash
 qemu-system-x86_64 \
-  -enable-kvm \
-  -m 4096 \
-  -smp 4 \
-  -drive file=vitruvian.img,format=raw,if=virtio \
-  -vga virtio \
-  -display sdl \
-  -net nic,model=virtio \
-  -net user \
-  -rtc base=localtime
+  -cdrom vitruvian.img -boot menu=on \
+  -m 8G -cpu host -smp sockets=1,cores=2,threads=2 --enable-kvm \
+  -netdev user,id=mynet,hostfwd=tcp::2222-:22 \
+  -device virtio-net-pci,netdev=mynet
 ```
 
 Adjust `-m` (RAM in MB) and `-smp` (CPU cores) to your host. Remove `-enable-kvm` if KVM is unavailable.
@@ -44,15 +39,10 @@ Adjust `-m` (RAM in MB) and `-smp` (CPU cores) to your host. Remove `-enable-kvm
 
 ```bash
 qemu-system-x86_64 \
-  -enable-kvm \
-  -m 4096 \
-  -smp 4 \
-  -cdrom vitruvian.iso \
-  -boot d \
-  -vga virtio \
-  -display sdl \
-  -net nic,model=virtio \
-  -net user
+  -cdrom vitruvian.iso -boot menu=on \
+  -m 8G -cpu host -smp sockets=1,cores=2,threads=2 --enable-kvm \
+  -netdev user,id=mynet,hostfwd=tcp::2222-:22 \
+  -device virtio-net-pci,netdev=mynet
 ```
 
 ### Useful flags
