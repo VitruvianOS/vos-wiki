@@ -81,6 +81,7 @@ cd ../generated.x86 && ../build/scripts/setupenv.sh
 ../configure --chroot-build
 ninja
 ```
+* on Fedora: `cmake -DBUILDTOOLS_MODE=1 -DFL_LIBRARY=/usr/lib64/libfltk.so .. -GNinja` (requires `fltk-devel`)
 
 `setupenv.sh` uses `debootstrap` to bootstrap a minimal Debian Trixie (amd64) environment under `generated.x86/image_tree/chroot`, installs all required `-dev` packages inside it, and writes `imagekernelversion.conf` with the chroot kernel version. The compiler and build tools are always taken from the host.
 
