@@ -23,13 +23,14 @@ A Debian-based host (Trixie or newer recommended). Required toolchain:
 ```bash
 sudo apt install -y \
   autoconf automake bison build-essential cmake \
-  debhelper debootstrap dh-dkms dkms elfutils flex \
+  debhelper debootstrap dh-dkms dkms dosfstools elfutils flex \
   generate-ninja git grub-common grub-efi-amd64-bin grub-pc-bin \
   libbfd-dev libdrm-dev libdw-dev libdwarf-dev libelf-dev libfl-dev \
   libfreetype6-dev libgif-dev libicns-dev libicu-dev libinput-dev \
   libjpeg-dev libncurses-dev libopenexr-dev libpng-dev libtiff-dev \
   libudev-dev libwebp-dev linux-headers-$(uname -r) \
-  mtools ninja-build xorriso zlib1g-dev squashfs-tools \
+  mtools ninja-build ovmf parted qemu-utils rsync squashfs-tools \
+  xfsprogs xorriso zlib1g-dev \
   --fix-missing
 ```
 
