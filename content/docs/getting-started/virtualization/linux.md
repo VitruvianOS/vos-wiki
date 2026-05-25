@@ -5,14 +5,14 @@ weight: 1
 
 # Virtualization on Linux
 
-## QEMU with KVM (recommended)
+## QEMU with KVM
 
 QEMU with KVM gives near-native performance on Linux hosts and is the primary tested environment.
 
 ### Install
 
 ```bash
-sudo apt install qemu-system-x86 qemu-kvm virt-manager
+sudo apt install qemu-system-x86 qemu-kvm
 ```
 
 Check that KVM is available:
@@ -54,18 +54,3 @@ qemu-system-x86_64 \
 | `-cpu host` | Expose host CPU features to the guest (better compatibility) |
 | `-snapshot` | Run without writing changes back to the image |
 | `-serial stdio` | Print serial output to the terminal |
-
-### GNOME Boxes
-
-GNOME Boxes provides a simple GUI over QEMU/KVM. It works but offers less control over VM parameters. Useful for quick tests.
-
-## VirtualBox
-
-Install from [virtualbox.org](https://www.virtualbox.org) or your distribution's package manager. Create a new VM with:
-
-- Type: **Linux**, version **Linux 2.6 / 3.x / 4.x (64-bit)**
-- RAM: 4 GB or more
-- Display: **VMSVGA**, 3D acceleration **off**
-- Storage: attach the raw or ISO image
-
-VirtualBox is slower than QEMU/KVM on Linux and is less well-tested with Vitruvian.

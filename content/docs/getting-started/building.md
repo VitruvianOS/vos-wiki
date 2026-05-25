@@ -7,7 +7,7 @@ weight: 1
 
 How to build Vitruvian from source. The build system produces a Debian package (`.deb`) that gets installed into a chroot and packaged as a bootable image. Two architectures are supported: **amd64** and **arm64**.
 
-All commands below must be run from inside the build directory (`generated.<arch>/`), not from the repo root. `configure`, `bake`, and `setupenv.sh` all use `realpath ./` as their base — running them from anywhere else fails.
+All `configure`, `bake`, and `setupenv.sh` commands must be run from inside the build directory (`generated.<arch>/`), not from the repo root. They use `realpath ./` as their base; running them from anywhere else fails.
 
 ## Prerequisites
 
@@ -49,11 +49,25 @@ cd Vitruvian
 git submodule update --init --recursive
 ```
 
+## Build host tools
+
+Before any build, compile the host tools (`rc`, `xres`, `resattr`) needed by the rdef→resource pipeline. This step is shared across all architectures and only needs to be done once:
+
+```bash
+mkdir -p buildtools
+cd buildtools
+cmake -DBUILDTOOLS_MODE=1 .. -GNinja
+ninja
+cd ..
+```
+
+Skipping this will cause the main build to fail with "missing rc / xres binary".
+
 ## amd64 build
 
 ### Quick build (no image)
 
-For development — compiles against host libraries, no chroot, no image:
+For development. Compiles against host libraries, no chroot, no image:
 
 ```bash
 mkdir -p generated.amd64
@@ -104,22 +118,8 @@ mkdir -p generated.arm64
 cd generated.arm64
 ../build/scripts/setupenv.sh --chroot-build --arch=arm64
 ../configure --arch=arm64 --chroot-build
-../bake build --image-type=raspberry
+../bake build --image-type=iso
 ```
-
-### Board image types
-
-| Image type | Target |
-|---|---|
-| `raspberry` | Raspberry Pi 4 / 5 |
-| `rockchip` | Rockchip-based boards (Rock Pi, etc.) |
-| `allwinner` | Allwinner-based boards |
-| `allwinner-h3` | Allwinner H3 specifically |
-| `beagle` | BeagleBone |
-| `visionfive2` | StarFive VisionFive 2 (RISC-V) |
-| `licheerv` | LicheeRV (RISC-V) |
-
-Each board type bundles the appropriate u-boot, device tree, and firmware. The board-specific logic lives in `build/scripts/lib/boards.sh`.
 
 arm64 produces `.deb` packages that include the Nexus DKMS kernel module, which auto-rebuilds on kernel update.
 
@@ -130,8 +130,8 @@ arm64 produces `.deb` packages that include the Nexus DKMS kernel module, which 
 | `--arch=ARCH` | `amd64` | `amd64` or `arm64` |
 | `--build-type=TYPE` | `Debug` | `Debug`, `Release`, or `Workflow` |
 | `--chroot-build` | off | Build inside debootstrap chroot (required for reproducible images) |
-| `--image-type=TYPE` | — | Default image type for `bake build` |
-| `--buildtools=PATH` | — | Use pre-built buildtools instead of building locally |
+| `--image-type=TYPE` | *none* | Default image type for `bake build` |
+| `--buildtools=PATH` | *none* | Use pre-built buildtools instead of building locally |
 
 Release build example:
 
@@ -149,14 +149,14 @@ Release build example:
 | `bake clean` | Clean build artifacts |
 | `bake boot --image-type=TYPE` | Boot the most recent image in QEMU |
 
-`bake build` handles the full pipeline: `ninja` → `cpack` → image creation. Don't call `cpack`, `mkiso.sh`, or `mkraw.sh` directly — those are internal.
+`bake build` handles the full pipeline: `ninja` → `cpack` → image creation. Don't call `cpack`, `mkiso.sh`, or `mkraw.sh` directly; those are internal.
 
 ## Troubleshooting
 
-**`CMakeLists.txt not found`** — you're running `configure` from the repo root. `cd` into `generated.<arch>/` first.
+**`CMakeLists.txt not found`**: you're running `configure` from the repo root. `cd` into `generated.<arch>/` first.
 
-**`no chroot found at ./image_tree/chroot`** — you passed `--chroot-build` without running `setupenv.sh` first.
+**`no chroot found at ./image_tree/chroot`**: you passed `--chroot-build` without running `setupenv.sh` first.
 
-**Build fails on missing `xres` or `rc`** — these are built as part of `configure` but a partial build state can leave them missing. Clean and re-run `configure`.
+**Build fails on missing `xres` or `rc`**: you skipped the buildtools step. Build it first (see above).
 
-**arm64 build can't find cross compiler** — make sure `gcc-aarch64-linux-gnu` is installed and `build/cross/aarch64-linux-gnu.cmake` exists.
+**arm64 build can't find cross compiler**: make sure `gcc-aarch64-linux-gnu` is installed and `build/cross/aarch64-linux-gnu.cmake` exists.

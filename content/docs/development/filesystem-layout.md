@@ -38,9 +38,9 @@ Access is via `fgetxattr`, `fsetxattr`, `fremovexattr`, `flistxattr` on the node
 
 ## Virtual references
 
-File identity in BeOS is `(dev_t, ino_t)` — stable across processes. Linux fds are process-local and expire on close. Vitruvian solves this with vrefs: the Nexus kernel module holds an fd on behalf of the whole system, assigns it a stable `vref_id`, and refcounts it.
+File identity in BeOS is `(dev_t, ino_t)`, stable across processes. Linux fds are process-local and expire on close. Vitruvian solves this with vrefs: the Nexus kernel module holds an fd on behalf of the whole system, assigns it a stable `vref_id`, and refcounts it.
 
-`entry_ref` and `node_ref` store vref IDs when the device equals `get_vref_dev()` (a sentinel). The Storage Kit handles this transparently — most application code never touches vref directly.
+`entry_ref` and `node_ref` store vref IDs when the device equals `get_vref_dev()` (a sentinel). The Storage Kit handles this transparently; most application code never touches vref directly.
 
 See the [Nexus]({{< relref "/docs/reference/nexus#virtual-references-vref" >}}) page for the full vref API.
 

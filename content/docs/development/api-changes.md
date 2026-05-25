@@ -5,7 +5,7 @@ weight: 2
 
 # API Changes
 
-Known differences between Vitruvian and the BeOS/Haiku APIs. Source-level compatibility is the goal — most applications compile and run unchanged. This page tracks the exceptions.
+Known differences between Vitruvian and the BeOS/Haiku APIs. Source-level compatibility is the goal; most applications compile and run unchanged. This page tracks the exceptions.
 
 ## Images
 
@@ -32,14 +32,14 @@ Known differences between Vitruvian and the BeOS/Haiku APIs. Source-level compat
 
 ## Keycodes
 
-- Vitruvian uses **evdev keycodes** throughout — no Haiku/Linux translation layer.
+- Vitruvian uses **evdev keycodes** throughout, no Haiku/Linux translation layer.
 - `B_KEY_DOWN` `"key"` field = `ev.code` (evdev keycode).
 - `B_F1_KEY`, `B_LEFT_ARROW`, `B_RETURN`, etc. are redefined to their evdev values.
 - Modifier mapping: xkb `Shift` → `B_SHIFT_KEY`, `Ctrl` → `B_CONTROL_KEY`, `Alt` → `B_COMMAND_KEY`.
 
 ## OpenGL
 
-- `libopengl.so` is a separate kit — it is not part of `libbe.so`. Applications using `BGLView` must link against `opengl` and `GLU` explicitly.
+- `libopengl.so` is a separate kit. It is not part of `libbe.so`. Applications using `BGLView` must link against `opengl` and `GLU` explicitly.
 - `BGLView::Draw` is the application's draw method. The renderer's `Draw(BRect)` is a no-op.
 
 ## libbe

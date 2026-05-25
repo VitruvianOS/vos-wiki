@@ -45,6 +45,6 @@ If you prefer to build from source rather than using a release image, see the [B
 
 ## First Boot
 
-On first boot the Vitruvian desktop will load automatically. If it does not, check for error output in the console — the system is experimental and some hardware configurations may require manual troubleshooting.
+On first boot the Vitruvian desktop will load automatically. If it does not, check for error output in the console. The system is experimental and some hardware configurations may require manual troubleshooting.
 
 For help, join the [Telegram chat](https://t.me/vitruvian_official_chat) or open an issue on [GitHub](https://github.com/VitruvianOS/Vitruvian/issues).
