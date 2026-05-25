@@ -142,15 +142,13 @@ Release build example:
 
 ## bake commands
 
-`bake` is a symlink at the repo root pointing to `build/scripts/bake.sh`.
-
 | Command | What it does |
 |---|---|
 | `bake build --image-type=TYPE` | Build everything and produce the specified image |
 | `bake clean` | Clean build artifacts |
 | `bake boot --image-type=TYPE` | Boot the most recent image in QEMU |
 
-`bake build` handles the full pipeline: `ninja` → `cpack` → image creation. Don't call `cpack`, `mkiso.sh`, or `mkraw.sh` directly; those are internal.
+Don't call `cpack`, `mkiso.sh`, or `mkraw.sh` directly; those are internal.
 
 ## Troubleshooting
 

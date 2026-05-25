@@ -252,5 +252,3 @@ Don't add author lines yourself; those are added by people taking real ownership
 - One blank line between method definitions.
 - Avoid deeply nested logic. Early returns keep code flat and readable.
 - Keep functions short and focused. If a function needs a comment explaining its sections, it should probably be split.
-- Don't use `auto` everywhere; explicit types are preferred in this tree.
-- Don't use `std::unique_ptr` / `std::shared_ptr` without strong reason. Haiku has `ObjectDeleter` / `BReference` for ownership.

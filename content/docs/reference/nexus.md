@@ -17,7 +17,6 @@ Each Nexus subsystem is exposed as a character device:
 |---|---|
 | `/dev/nexus` | ports, semaphores, threads |
 | `/dev/nexus_area` | shared memory areas |
-| `/dev/nexus_vref` | virtual references (vref) |
 | `/dev/nexus_node_monitor` | filesystem watches |
 
 Every process opens its own file descriptors to these devices at startup via `BKernelPrivate::Team::Init()`. File descriptors are process-local and not inherited across fork; children re-initialize via a constructor.
@@ -79,16 +78,6 @@ Provides filesystem event notifications compatible with the BeOS `node_monitor` 
 - `B_DEVICE_MOUNTED` / `B_DEVICE_UNMOUNTED`: volume mounted or unmounted
 
 Nexus hooks into Linux's `fsnotify` subsystem and translates events into `B_NODE_MONITOR` messages. This is what allows Tracker to watch directories and respond to changes in real time, exactly as it would on Haiku.
-
-## Virtual references (vref)
-
-Linux file descriptors are process-local and expire on close. Haiku's API assumes stable `(dev_t, ino_t)` identity for open files across processes. The vref system bridges this: Nexus holds an fd on behalf of the whole system, assigns it a stable integer id, and refcounts it.
-
-- `create_vref(fd)`: Nexus takes ownership of the fd, returns a `vref_id`
-- `acquire_vref(id)` / `release_vref(id)`: increment/decrement refcount
-- `open_vref(id)`: get a dup of the held fd
-
-Virtual refs are stored in `entry_ref.directory` and `node_ref.node` when the device equals `get_vref_dev()` (a sentinel value). The Storage Kit handles them transparently; most code never touches vref directly.
 
 ## Team registration
 

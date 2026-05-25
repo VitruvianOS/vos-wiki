@@ -36,14 +36,6 @@ BeOS relies on filesystem extended attributes for file metadata, MIME types, app
 
 Access is via `fgetxattr`, `fsetxattr`, `fremovexattr`, `flistxattr` on the node's open fd. `BNode::ReadAttr`, `WriteAttr`, `GetAttrInfo` wrap these. Attribute iteration (`BNode::GetNextAttr`) walks `flistxattr` output and strips the `user.` prefix.
 
-## Virtual references
-
-File identity in BeOS is `(dev_t, ino_t)`, stable across processes. Linux fds are process-local and expire on close. Vitruvian solves this with vrefs: the Nexus kernel module holds an fd on behalf of the whole system, assigns it a stable `vref_id`, and refcounts it.
-
-`entry_ref` and `node_ref` store vref IDs when the device equals `get_vref_dev()` (a sentinel). The Storage Kit handles this transparently; most application code never touches vref directly.
-
-See the [Nexus]({{< relref "/docs/reference/nexus#virtual-references-vref" >}}) page for the full vref API.
-
 {{< hint info >}}
 More detail on individual directories and the attribute namespace is coming.
 {{< /hint >}}
