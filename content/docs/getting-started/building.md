@@ -148,8 +148,6 @@ Release build example:
 | `bake clean` | Clean build artifacts |
 | `bake boot --image-type=TYPE` | Boot the most recent image in QEMU |
 
-Don't call `cpack`, `mkiso.sh`, or `mkraw.sh` directly; those are internal.
-
 ## Troubleshooting
 
 **`CMakeLists.txt not found`**: you're running `configure` from the repo root. `cd` into `generated.<arch>/` first.
