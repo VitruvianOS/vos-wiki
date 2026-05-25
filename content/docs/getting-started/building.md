@@ -5,140 +5,158 @@ weight: 1
 
 # Building
 
-How to compile Vitruvian from source on a Debian-based system.
+How to build Vitruvian from source. The build system produces a Debian package (`.deb`) that gets installed into a chroot and packaged as a bootable image. Two architectures are supported: **amd64** and **arm64**.
+
+All commands below must be run from inside the build directory (`generated.<arch>/`), not from the repo root. `configure`, `bake`, and `setupenv.sh` all use `realpath ./` as their base — running them from anywhere else fails.
 
 ## Prerequisites
 
-Required software:
+A Debian-based host (Trixie or newer recommended). Required toolchain:
 
 - cmake ≥ 3.25
-- gcc ≥ 8
-- libinput ≥ 1.16.4-3
+- gcc ≥ 8 (native) or `gcc-aarch64-linux-gnu` (arm64 cross)
 - ninja
+- debootstrap (for chroot builds)
 
-Install all build dependencies:
+### amd64 dependencies
 
 ```bash
 sudo apt install -y \
-  autoconf \
-  automake \
-  bison \
-  build-essential \
-  cmake \
-  debhelper \
-  debootstrap \
-  dh-dkms \
-  dkms \
-  elfutils \
-  flex \
-  generate-ninja \
-  git \
-  grub-common \
-  grub-efi-amd64-bin \
-  grub-pc-bin \
-  libbfd-dev \
-  libdrm-dev \
-  libdw-dev \
-  libdwarf-dev \
-  libelf-dev \
-  libfl-dev \
-  libfreetype6-dev \
-  libgif-dev \
-  libicns-dev \
-  libicu-dev \
-  libinput-dev \
-  libjpeg-dev \
-  libncurses-dev \
-  libopenexr-dev \
-  libpng-dev \
-  libtiff-dev \
-  libudev-dev \
-  libwebp-dev \
-  linux-headers-$(uname -r) \
-  mtools \
-  ninja-build \
-  xorriso \
-  zlib1g-dev \
-  squashfs-tools \
+  autoconf automake bison build-essential cmake \
+  debhelper debootstrap dh-dkms dkms elfutils flex \
+  generate-ninja git grub-common grub-efi-amd64-bin grub-pc-bin \
+  libbfd-dev libdrm-dev libdw-dev libdwarf-dev libelf-dev libfl-dev \
+  libfreetype6-dev libgif-dev libicns-dev libicu-dev libinput-dev \
+  libjpeg-dev libncurses-dev libopenexr-dev libpng-dev libtiff-dev \
+  libudev-dev libwebp-dev linux-headers-$(uname -r) \
+  mtools ninja-build xorriso zlib1g-dev squashfs-tools \
   --fix-missing
 ```
 
-## Getting the Source
+### arm64 cross-compile dependencies
+
+Everything from the amd64 list, plus:
+
+```bash
+sudo apt install -y gcc-aarch64-linux-gnu qemu-user-static
+```
+
+## Getting the source
 
 ```bash
 git clone https://github.com/VitruvianOS/Vitruvian.git
+cd Vitruvian
+git submodule update --init --recursive
 ```
 
-## Building VitruvianOS
+## amd64 build
+
+### Quick build (no image)
+
+For development — compiles against host libraries, no chroot, no image:
 
 ```bash
-git submodule update --init --recursive
-mkdir buildtools/ && mkdir generated.x86/
-cd buildtools/
-cmake -DBUILDTOOLS_MODE=1 .. -GNinja
-ninja
-cd ../generated.x86 && ../build/scripts/setupenv.sh
-../configure --chroot-build
+mkdir -p generated.amd64
+cd generated.amd64
+../configure --arch=amd64
 ninja
 ```
 
-`setupenv.sh` uses `debootstrap` to bootstrap a minimal Debian Trixie (amd64) environment under `generated.x86/image_tree/chroot`, installs all required `-dev` packages inside it, and writes `imagekernelversion.conf` with the chroot kernel version. The compiler and build tools are always taken from the host.
+Run individual targets:
 
-If you only need to build and run Vitruvian locally without producing an image, you can skip `setupenv.sh` and run `../configure` without `--chroot-build`, building directly against the host libraries instead.
+```bash
+ninja app_server          # just app_server
+ninja                     # everything
+```
 
-### configure options
+### Full build with ISO or raw image
 
-The `configure` script accepts the following options:
+This uses a debootstrap chroot so the resulting `.deb` is reproducible and installable on a target system. `setupenv.sh` bootstraps a minimal Debian Trixie environment under `generated.amd64/image_tree/chroot` and installs all `-dev` packages inside it.
+
+```bash
+mkdir -p generated.amd64
+cd generated.amd64
+../build/scripts/setupenv.sh --chroot-build --arch=amd64
+../configure --arch=amd64 --chroot-build
+../bake build --image-type=iso
+```
+
+For a raw GPT+XFS disk image instead of ISO:
+
+```bash
+../bake build --image-type=raw
+```
+
+### Boot the result
+
+```bash
+../bake boot --image-type=iso
+```
+
+This launches QEMU with the correct flags. See [Virtualization]({{< relref "/docs/getting-started/virtualization" >}}) for manual QEMU setup.
+
+## arm64 cross-compile
+
+arm64 is cross-compiled from an amd64 host. The toolchain file `build/cross/aarch64-linux-gnu.cmake` handles the cross-compilation flags.
+
+```bash
+mkdir -p generated.arm64
+cd generated.arm64
+../build/scripts/setupenv.sh --chroot-build --arch=arm64
+../configure --arch=arm64 --chroot-build
+../bake build --image-type=raspberry
+```
+
+### Board image types
+
+| Image type | Target |
+|---|---|
+| `raspberry` | Raspberry Pi 4 / 5 |
+| `rockchip` | Rockchip-based boards (Rock Pi, etc.) |
+| `allwinner` | Allwinner-based boards |
+| `allwinner-h3` | Allwinner H3 specifically |
+| `beagle` | BeagleBone |
+| `visionfive2` | StarFive VisionFive 2 (RISC-V) |
+| `licheerv` | LicheeRV (RISC-V) |
+
+Each board type bundles the appropriate u-boot, device tree, and firmware. The board-specific logic lives in `build/scripts/lib/boards.sh`.
+
+arm64 produces `.deb` packages that include the Nexus DKMS kernel module, which auto-rebuilds on kernel update.
+
+## configure options
 
 | Option | Default | Description |
 |---|---|---|
-| `--build-type=TYPE` | `Debug` | CMake build type: `Debug`, `Release`, or `Workflow` |
-| `--arch=ARCH` | `x86_64` | Target architecture (see [Architectures](#architectures)) |
-| `--chroot-build` | off | Build against the chroot sysroot instead of host libraries |
-| `--chroot-path=PATH` | `<build>/image_tree/chroot` | Override the chroot path (requires `--chroot-build`) |
+| `--arch=ARCH` | `amd64` | `amd64` or `arm64` |
+| `--build-type=TYPE` | `Debug` | `Debug`, `Release`, or `Workflow` |
+| `--chroot-build` | off | Build inside debootstrap chroot (required for reproducible images) |
+| `--image-type=TYPE` | — | Default image type for `bake build` |
+| `--buildtools=PATH` | — | Use pre-built buildtools instead of building locally |
 
-Example — release build with chroot:
+Release build example:
 
 ```bash
-../configure --build-type=Release --chroot-build
+../configure --arch=amd64 --build-type=Release --chroot-build
 ```
 
-### Architectures
+## bake commands
 
-| Architecture | Status |
+`bake` is a symlink at the repo root pointing to `build/scripts/bake.sh`.
+
+| Command | What it does |
 |---|---|
-| `x86_64` | Supported (default) |
-| `arm64` | Not yet supported |
+| `bake build --image-type=TYPE` | Build everything and produce the specified image |
+| `bake clean` | Clean build artifacts |
+| `bake boot --image-type=TYPE` | Boot the most recent image in QEMU |
 
-x86_64 is selected by default. To make the selection explicit:
+`bake build` handles the full pipeline: `ninja` → `cpack` → image creation. Don't call `cpack`, `mkiso.sh`, or `mkraw.sh` directly — those are internal.
 
-```bash
-../configure --arch=x86_64
-```
+## Troubleshooting
 
+**`CMakeLists.txt not found`** — you're running `configure` from the repo root. `cd` into `generated.<arch>/` first.
 
-## Building the .deb Package
+**`no chroot found at ./image_tree/chroot`** — you passed `--chroot-build` without running `setupenv.sh` first.
 
-After a successful `ninja` build:
+**Build fails on missing `xres` or `rc`** — these are built as part of `configure` but a partial build state can leave them missing. Clean and re-run `configure`.
 
-```bash
-cd generated.x86 && cpack
-```
-
-## Creating a Live ISO Image
-
-After building and generating the `.deb` packages:
-
-```bash
-chmod +x ./build/scripts/mkiso.sh
-cd generated.x86 && ../build/scripts/mkiso.sh
-```
-
-## Creating a Live Raw Image
-
-After building and generating the `.deb` packages:
-
-```bash
-chmod +x ./build/scripts/mkraw.sh
-cd generated.x86 && ../build/scripts/mkraw.sh
-```
+**arm64 build can't find cross compiler** — make sure `gcc-aarch64-linux-gnu` is installed and `build/cross/aarch64-linux-gnu.cmake` exists.

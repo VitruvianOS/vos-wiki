@@ -9,42 +9,40 @@ weight: 4
 
 ## What is Vitruvian?
 
-VitruvianOS (V\OS) is an operating system based on Linux, inspired by BeOS. It runs the BeOS/Haiku desktop and API on top of a real-time patched Linux kernel, with custom kernel modules — collectively called **Nexus** — providing the missing BeOS-style system services.
+VitruvianOS (V\\OS) is a Linux-based operating system inspired by BeOS. It runs the BeOS/Haiku desktop and API on top of a real-time patched Linux kernel, with custom kernel modules — collectively called **Nexus** — filling in the BeOS system services that Linux doesn't provide natively.
 
-See the [Nexus reference page]({{< relref "/docs/reference/nexus" >}}) for details on the kernel bridge.
+See the [Nexus reference page]({{< relref "/docs/reference/nexus" >}}) for details.
 
 ---
 
 ## Is it ready to use?
 
-The project is in active development and experimental. Core components (Deskbar, Tracker, app_server, registrar) run, and BeOS/Haiku application source code compiles and runs with minimal changes. Expect rough edges.
+Not yet. The project is in active development — alpha stage. Core components (Deskbar, Tracker, app_server, registrar) work, and BeOS/Haiku application source code compiles and runs with minimal changes. Expect rough edges.
 
 ---
 
 ## What's coming next?
 
-The most significant features planned for upcoming releases:
-
-- **Filesystem indexing and live queries** — a hallmark of the original BeOS experience, enabling real-time file search and dynamic query results across the filesystem
-- **Multiuser support with graphical login** — full multi-user isolation with a dedicated login screen, per-user home directories, and session management
+- **Filesystem indexing and live queries** — one of the defining features of BeOS: query the filesystem like a database, find files by attribute in real time, without any indexing daemon
+- **Multiuser support with graphical login** — per-user home directories, session management, a dedicated login screen
 
 ---
 
 ## How is it different from Haiku?
 
-Haiku is a complete from-scratch reimplementation of BeOS that runs its own kernel. Vitruvian runs on the Linux kernel instead, which means it inherits Linux's hardware support, driver ecosystem, and security model. The goal is full BeOS/Haiku API compatibility on top of that foundation — the best of both worlds.
+Haiku is a from-scratch reimplementation of BeOS with its own kernel. Vitruvian runs on the Linux kernel instead, so it picks up Linux's hardware support, driver ecosystem, and security model for free. The goal is full BeOS/Haiku API compatibility on top of that — without writing a kernel from scratch.
 
 ---
 
 ## How mature is the API compatibility?
 
-The core kits (Application, Interface, Storage, Support) are functional enough to run meaningful BeOS/Haiku applications with little or no source changes. Some kits are further along than others. The [API Changes]({{< relref "/docs/development/api-changes" >}}) page tracks known gaps and deviations from the BeOS/Haiku API.
+The core kits (Application, Interface, Storage, Support) work well enough to run real BeOS/Haiku applications with little or no source changes. Some kits are further along than others. The [API Changes]({{< relref "/docs/development/api-changes" >}}) page tracks known gaps.
 
 ---
 
 ## Is there a package manager?
 
-Yes. Vitruvian ships as a Debian-derived image, so **apt** is the package manager. The plan is to give users access to the full Debian software archive — over 120,000 packages — directly from Vitruvian, alongside native Vitruvian software. If it runs on Debian, it should be installable on Vitruvian.
+Yes. Vitruvian ships as a Debian-derived image, so **apt** is the package manager. The full Debian archive (120,000+ packages) is available alongside native Vitruvian software. If it runs on Debian, it runs on Vitruvian.
 
 ---
 
@@ -52,64 +50,59 @@ Yes. Vitruvian ships as a Debian-derived image, so **apt** is the package manage
 
 The reference boot filesystems are **XFS** and **SquashFS**, both with full extended attribute support:
 
-- **XFS** is the reference filesystem for standard desktop installs
-- **SquashFS** is the reference filesystem for live images, live CDs, and embedded targets
+- **XFS** for standard desktop installs
+- **SquashFS** for live images and embedded targets
 
-Vitruvian will also boot from **ext4** and most other Linux-supported filesystems that provide extended attribute support, but XFS and SquashFS are the primary tested and recommended options. Even without attributes, the system should be able to boot, albeit with limited capabilities.
+Vitruvian also boots from **ext4** and most other Linux filesystems with extended attribute support. XFS and SquashFS are the tested and recommended options. The system can boot without xattr support, but with limited capabilities.
 
 ---
 
 ## Will it run in a virtual machine?
 
-Yes. Running in QEMU is the recommended way to test during development. See [Virtualization]({{< relref "/docs/getting-started/virtualization" >}}) for platform-specific setup guides.
+Yes. QEMU with KVM is the recommended setup for testing. See [Virtualization]({{< relref "/docs/getting-started/virtualization" >}}) for platform-specific guides.
 
 ---
 
 ## What architectures are supported?
 
-Vitruvian targets x86-64, ARM, and RISC-V. x86-64 is the primary development platform; ARM and RISC-V support is actively being built.
+- **amd64** (x86-64) — primary development platform, fully supported
+- **arm64** — cross-compilation from an amd64 host, board images available (Raspberry Pi, Rockchip, Allwinner, BeagleBone)
+- **RISC-V** — early work in progress
 
 ---
 
 ## Can I contribute without being a kernel developer?
 
-Absolutely. There is useful work at every level — porting or fixing BeOS/Haiku applications, improving the desktop experience, writing documentation, testing on real hardware and filing issues, or helping with the website and wiki. Jump in on [Telegram](https://t.me/vitruvian_official_chat) and ask where help is most needed.
+Yes. There's useful work at every level — porting BeOS/Haiku applications, fixing desktop bugs, writing docs, testing on real hardware, filing issues, helping with the website. Come say hello on [Telegram](https://t.me/vitruvian_official_chat) and ask where help is needed.
 
 ---
 
 ## What is Nexus?
 
-Nexus is the set of custom Linux kernel modules that bridge Linux with the BeOS/Haiku runtime. It provides node monitoring (filesystem event notifications), device and volume tracking, and routes kernel events to the BeOS/Haiku messaging subsystem in userspace. See the [Nexus]({{< relref "/docs/reference/nexus" >}}) page.
+Nexus is a set of Linux kernel modules that bridge the Linux kernel with the BeOS/Haiku runtime. It implements ports, semaphores, shared memory areas, thread control, virtual references, and node monitoring — all the kernel APIs that Haiku provides natively but Linux doesn't. See the [Nexus]({{< relref "/docs/reference/nexus" >}}) page.
 
 ---
 
 ## How do I report a bug?
 
-Open an issue on [GitHub](https://github.com/VitruvianOS/Vitruvian/issues). Include relevant log output and a clear description of what you were doing and what you expected to happen.
+Open an issue on [GitHub](https://github.com/VitruvianOS/Vitruvian/issues). Include relevant log output, what you were doing, and what you expected to happen.
 
 ---
 
 ## Can I donate?
 
-Yes — see the [Donate]({{< relref "/docs/reference/donate" >}}) page. Every bit helps keep the project moving.
+Yes — see the [Donate]({{< relref "/docs/reference/donate" >}}) page.
 
 ---
 
 ## Can I send hardware to the developers?
 
-Hardware donations for testing and development are very welcome. Particularly useful:
-
-- **ARM single-board computers** — Raspberry Pi 4/5, Orange Pi, Rock Pi, and similar
-- **RISC-V boards** — any development board running a recent Linux kernel
-- **Laptops** — not-so-old x86-64 laptops (ThinkPads, Dell, HP from the last ~6 years work well) with varied GPU and wireless hardware
-- **Desktops or workstations** with unusual or niche GPU/NIC combinations that are hard to test remotely
-
-Reach out on [Telegram](https://t.me/vitruvian_official_chat) first to coordinate. We will confirm a shipping address directly.
+Hardware donations for testing and development are welcome. Reach out on [Telegram](https://t.me/vitruvian_official_chat) to coordinate.
 
 ---
 
 ## Where can I get help?
 
-- [Telegram chat](https://t.me/vitruvian_official_chat) — best place for quick questions
+- [Telegram chat](https://t.me/vitruvian_official_chat) — quickest way to get an answer
 - [GitHub Issues](https://github.com/VitruvianOS/Vitruvian/issues) — bugs and feature requests
-- [Mailing list](https://www.freelists.org/list/vitruvian) — broader discussions
+- [Mailing list](https://www.freelists.org/list/vitruvian) — longer-form discussion

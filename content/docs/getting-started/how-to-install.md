@@ -5,9 +5,9 @@ weight: 2
 
 # How To Install
 
-## From a Nightly Image
+## From a Release Image
 
-Nightly builds are available via [GitHub Actions](https://github.com/VitruvianOS/Vitruvian/actions). Download the latest successful build artifact.
+Download the latest image from [GitHub Releases](https://github.com/VitruvianOS/Vitruvian/releases/latest) or the [v-os.dev download page](https://v-os.dev/download/).
 
 ### Write to a USB drive
 
@@ -41,7 +41,7 @@ If a live ISO is provided, boot it directly from USB using the same method above
 
 ## Build from Source
 
-If you prefer to build from source rather than using a nightly image, see the [Building]({{< relref "/docs/getting-started/building" >}}) page.
+If you prefer to build from source rather than using a release image, see the [Building]({{< relref "/docs/getting-started/building" >}}) page.
 
 ## First Boot
 

@@ -4,10 +4,10 @@ weight: 1
 bookFlatSection: false
 ---
 
-Welcome to the Vitruvian wiki. Use the sidebar to navigate, or jump to a section below.
+VitruvianOS documentation. Use the sidebar to navigate, or pick a section below.
 
 ## Sections
 
-- [Getting Started](getting-started/) — build instructions, installation, virtualization
+- [Getting Started](getting-started/) — building from source, installation, virtualization, FAQ
 - [Development](development/) — coding guidelines, API changes, filesystem layout
-- [Reference](reference/) — legacy BeOS/Haiku documentation, Nexus, donations
+- [Reference](reference/) — Nexus kernel docs, legacy BeOS/Haiku books, donations

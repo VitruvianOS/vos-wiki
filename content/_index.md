@@ -2,17 +2,17 @@
 title: "VitruvianOS Wiki"
 ---
 
-# Welcome to the VitruvianOS Wiki
+# VitruvianOS Wiki
 
-Documentation for developers and contributors.
+Build instructions, API references, and technical docs for VitruvianOS.
 
-Vitruvian is an operating system based on Linux, inspired by the BeOS. This wiki contains build instructions, developer references, and technical documentation.
+Vitruvian is a Linux-based operating system inspired by BeOS. It runs the BeOS/Haiku desktop and API on top of a real-time patched Linux kernel, with custom kernel modules (Nexus) providing the missing BeOS-style system services.
 
 ## Sections
 
-- **[Getting Started]({{< relref "/docs/getting-started" >}})** — build instructions, installation, virtualization
-- **[Development]({{< relref "/docs/development" >}})** — coding guidelines, API changes, filesystem layout
-- **[Reference]({{< relref "/docs/reference" >}})** — legacy BeOS/Haiku documentation
+- **[Getting Started]({{< relref "/docs/getting-started" >}})** — build, install, virtualization, FAQ
+- **[Development]({{< relref "/docs/development" >}})** — coding guidelines, API differences, filesystem layout
+- **[Reference]({{< relref "/docs/reference" >}})** — Nexus kernel docs, legacy BeOS/Haiku books, donations
 
 ## Community
 

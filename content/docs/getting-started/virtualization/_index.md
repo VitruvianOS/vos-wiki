@@ -6,8 +6,8 @@ bookCollapseSection: true
 
 # Virtualization
 
-Running Vitruvian in a virtual machine is the recommended way to test during development without dedicated hardware. Choose your host platform:
+Running Vitruvian in a VM is the recommended way to test without dedicated hardware.
 
-- [Linux]({{< relref "linux" >}})
-- [Windows]({{< relref "windows" >}})
-- [macOS]({{< relref "macos" >}})
+- [Linux]({{< relref "linux" >}}) — QEMU/KVM (recommended), VirtualBox
+- [Windows]({{< relref "windows" >}}) — VirtualBox, QEMU with WHPX
+- [macOS]({{< relref "macos" >}}) — UTM (recommended), QEMU, VirtualBox

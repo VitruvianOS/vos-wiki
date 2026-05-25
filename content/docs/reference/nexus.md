@@ -5,39 +5,117 @@ weight: 2
 
 # Nexus
 
-Nexus is the Vitruvian kernel subsystem that bridges the Linux kernel with the BeOS/Haiku runtime. It is implemented as a set of custom Linux kernel modules loaded at boot.
+Nexus is the Vitruvian kernel subsystem that bridges the Linux kernel with the BeOS/Haiku runtime. It's implemented as a set of Linux kernel modules (loaded at boot) that emulate the IPC and filesystem APIs Haiku provides natively in its monolithic kernel.
 
-## Purpose
+Haiku applications expect ports, semaphores, shared memory areas, thread control, virtual file references, and node monitoring — none of which exist in Linux in BeOS-compatible form. Nexus fills that gap.
 
-BeOS and Haiku expose a set of kernel APIs that have no direct equivalent in Linux. Nexus implements these APIs as thin kernel modules, allowing the Vitruvian userspace — including the BeOS/Haiku API compatibility layer — to run on an otherwise standard Linux kernel.
+## Device layout
 
-## Components
+Each Nexus subsystem is exposed as a character device:
 
-### Node Monitor
+| Device | Subsystem |
+|---|---|
+| `/dev/nexus` | ports, semaphores, threads |
+| `/dev/nexus_area` | shared memory areas |
+| `/dev/nexus_vref` | virtual references (vref) |
+| `/dev/nexus_node_monitor` | filesystem watches |
 
-The node monitor is one of the core functionalities of Nexus. It provides filesystem event notifications equivalent to the BeOS `node_monitor` API:
+Every process opens its own file descriptors to these devices at startup via `BKernelPrivate::Team::Init()`. File descriptors are process-local and not inherited across fork; children re-initialize via a constructor.
 
-- `B_ENTRY_CREATED` — a new file or directory was created
-- `B_ENTRY_REMOVED` — a file or directory was removed
-- `B_ENTRY_MOVED` — a file or directory was renamed or moved
-- `B_STAT_CHANGED` — file metadata (size, modification time, etc.) changed
-- `B_ATTR_CHANGED` — an extended attribute was added, modified, or removed
-- `B_DEVICE_MOUNTED` / `B_DEVICE_UNMOUNTED` — a volume was mounted or unmounted
+## IPC primitives
 
-Internally, Nexus hooks into Linux's `fsnotify` subsystem and translates events into BeOS-compatible messages delivered to registered listeners in userspace.
+### Ports
 
-### Device and Volume Tracking
+Haiku-style message ports — bounded queues with read/write operations:
 
-Nexus monitors mount and unmount events via the Linux kernel's filesystem notification infrastructure and exposes volume information through an API compatible with the BeOS `fs_info` / `device` calls. This allows Tracker, the Deskbar, and applications to enumerate mounted volumes and respond to changes in real time.
+- `NEXUS_PORT_CREATE` — create a new port
+- `NEXUS_PORT_CLOSE` — close a port (no new writers)
+- `NEXUS_PORT_DELETE` — destroy a port
+- `NEXUS_PORT_READ` / `NEXUS_PORT_WRITE` — send and receive messages
+- `NEXUS_PORT_FIND` — look up a port by name
+- `NEXUS_PORT_INFO` / `NEXUS_PORT_MESSAGE_INFO` — query port state
 
-### Messaging Bridge
+Limits: max queue depth 4096, max message size 256 KB.
 
-Events generated inside the kernel are routed to the VitruvianOS messaging subsystem in userspace. This allows standard `BLooper`/`BHandler` code to receive node monitor notifications exactly as it would on Haiku, with no API changes required.
+### Semaphores
+
+Standard counting semaphores:
+
+- `NEXUS_SEM_CREATE` / `NEXUS_SEM_DELETE`
+- `NEXUS_SEM_ACQUIRE` / `NEXUS_SEM_RELEASE`
+- `NEXUS_SEM_COUNT` / `NEXUS_SEM_INFO` / `NEXUS_SEM_NEXT_INFO`
+
+### Threads
+
+Thread lifecycle and communication:
+
+- `NEXUS_THREAD_SPAWN` — create a new thread
+- `NEXUS_THREAD_SET_NAME` / `NEXUS_THREAD_RESUME`
+- `NEXUS_THREAD_READ` / `NEXUS_THREAD_WRITE` / `NEXUS_THREAD_HAS_DATA`
+- `NEXUS_THREAD_WAITFOR` / `NEXUS_THREAD_WAIT_NEWBORN`
+- `NEXUS_THREAD_SET_RETURN_CODE`
+
+Note: Haiku spawns threads in suspended state; `resume_thread()` starts them. Vitruvian's `pthread_create` starts immediately, so the run-state model differs.
+
+### Areas
+
+Shared memory regions backed by `memfd_create` + `mmap`:
+
+- `NEXUS_AREA_CREATE` / `NEXUS_AREA_CLONE` / `NEXUS_AREA_DELETE`
+- `NEXUS_AREA_FIND` / `NEXUS_AREA_GET_INFO` / `NEXUS_AREA_GET_NEXT`
+- `NEXUS_AREA_RESIZE` / `NEXUS_AREA_SET_PROTECTION` / `NEXUS_AREA_TRANSFER`
+
+Cloning an area maps the same memfd into the target process.
+
+## Node monitor
+
+Provides filesystem event notifications compatible with the BeOS `node_monitor` API:
+
+- `B_ENTRY_CREATED` — file or directory created
+- `B_ENTRY_REMOVED` — file or directory removed
+- `B_ENTRY_MOVED` — file or directory renamed or moved
+- `B_STAT_CHANGED` — metadata changed (size, mtime, etc.)
+- `B_ATTR_CHANGED` — extended attribute added, modified, or removed
+- `B_DEVICE_MOUNTED` / `B_DEVICE_UNMOUNTED` — volume mounted or unmounted
+
+Nexus hooks into Linux's `fsnotify` subsystem and translates events into `B_NODE_MONITOR` messages. This is what allows Tracker to watch directories and respond to changes in real time, exactly as it would on Haiku.
+
+## Virtual references (vref)
+
+Linux file descriptors are process-local and expire on close. Haiku's API assumes stable `(dev_t, ino_t)` identity for open files across processes. The vref system bridges this: Nexus holds an fd on behalf of the whole system, assigns it a stable integer id, and refcounts it.
+
+- `create_vref(fd)` — Nexus takes ownership of the fd, returns a `vref_id`
+- `acquire_vref(id)` / `release_vref(id)` — increment/decrement refcount
+- `open_vref(id)` — get a dup of the held fd
+
+Virtual refs are stored in `entry_ref.directory` and `node_ref.node` when the device equals `get_vref_dev()` (a sentinel value). The Storage Kit uses them transparently — most code never touches vref directly.
+
+## Team registration
+
+Every process that uses Nexus opens the devices and registers itself as a team. On process exit, the kernel module cleans up all resources owned by that team (ports, semaphores, areas, vrefs).
+
+## Deployment
+
+Nexus ships as a **DKMS package** (`nexus-dkms`). It auto-rebuilds on kernel update. The DKMS source copy at `debian/nexus-dkms/usr/src/nexus-1/nexus/` must be kept in sync with the main `nexus/` tree — every ioctl addition and every fix goes in both places.
 
 ## Source
 
-Nexus has its own repository at [github.com/Numerio/Nexus](https://github.com/Numerio/Nexus) and is included as a submodule in the [VitruvianOS repository](https://github.com/VitruvianOS/Vitruvian).
+Nexus source lives in the Vitruvian repo at `src/system/kernel/nexus/nexus/`. Module files:
 
-## Further Reading
+- `nexus_core.c` — ioctl dispatch, team registration
+- `port.c` — port implementation
+- `sem.c` — semaphore implementation
+- `vref.c` — virtual reference implementation
+- `node_monitor.c` — filesystem watches
+- `area.c` — shared memory
+- `nexus.h` — all ioctl definitions and structs (shared with userspace)
+
+Userspace wrappers are in `src/system/libroot2/`: `port.cpp`, `sem.cpp`, `area.cpp`, `thread.cpp`, `fs/vref.cpp`.
+
+The standalone repository is at [github.com/Numerio/Nexus](https://github.com/Numerio/Nexus), included as a submodule.
+
+## Further reading
 
 - [Building VitruvianOS](../getting-started/building/)
+- [Filesystem Layout](../development/filesystem-layout/)
+- [API Changes](../development/api-changes/)
