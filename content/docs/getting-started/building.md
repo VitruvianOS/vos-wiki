@@ -120,14 +120,12 @@ cd generated.arm64
 ../bake build --image-type=iso
 ```
 
-arm64 produces `.deb` packages that include the Nexus DKMS kernel module, which auto-rebuilds on kernel update.
-
 ## configure options
 
 | Option | Default | Description |
 |---|---|---|
 | `--arch=ARCH` | `amd64` | `amd64` or `arm64` |
-| `--build-type=TYPE` | `Debug` | `Debug`, `Release`, or `Workflow` |
+| `--build-type=TYPE` | `Debug` | `Debug`, `Release` |
 | `--chroot-build` | off | Build inside debootstrap chroot (required for reproducible images) |
 | `--image-type=TYPE` | *none* | Default image type for `bake build` |
 | `--buildtools=PATH` | *none* | Use pre-built buildtools instead of building locally |
@@ -150,7 +148,7 @@ Release build example:
 
 **`CMakeLists.txt not found`**: you're running `configure` from the repo root. `cd` into `generated.<arch>/` first.
 
-**`no chroot found at ./image_tree/chroot`**: This should not happen normally as `configure --chroot-build` automatically invokes `setupenv.sh` when needed. If you see this, try running `../configure --arch=<arch> --chroot-build` again.
+**`no chroot found at ./image_tree/chroot`**: This should not happen normally as `configure --chroot-build`. If you see this, try running `../configure --arch=<arch> --chroot-build` again.
 
 **Build fails on missing `xres` or `rc`**: you skipped the buildtools step. Build it first (see above).
 
