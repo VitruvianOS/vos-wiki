@@ -7,7 +7,7 @@ weight: 1
 
 How to build Vitruvian from source. The build system produces a Debian package (`.deb`) that gets installed into a chroot and packaged as a bootable image. Two architectures are supported: **amd64** and **arm64**.
 
-All `configure`, `bake`, and `setupenv.sh` commands must be run from inside the build directory (`generated.<arch>/`), not from the repo root. They use `realpath ./` as their base; running them from anywhere else fails.
+Both `configure`, `bake` commands must be run from inside the build directory (`generated.<arch>/`), not from the repo root. They use `realpath ./` as their base; running them from anywhere else fails.
 
 ## Prerequisites
 
@@ -86,12 +86,11 @@ ninja                     # everything
 
 ### Full build with ISO or raw image
 
-This uses a debootstrap chroot so the resulting `.deb` is reproducible and installable on a target system. `setupenv.sh` bootstraps a minimal Debian Trixie environment under `generated.amd64/image_tree/chroot` and installs all `-dev` packages inside it.
+This uses a debootstrap chroot so the resulting `.deb` is reproducible and installable on a target system. The `configure` command automatically creates the chroot with the debendencies bootstrapped. The chroot is not meant to be manipulated by the user in general.
 
 ```bash
 mkdir -p generated.amd64
 cd generated.amd64
-../build/scripts/setupenv.sh --chroot-build --arch=amd64
 ../configure --arch=amd64 --chroot-build
 ../bake build --image-type=iso
 ```
@@ -117,7 +116,6 @@ arm64 is cross-compiled from an amd64 host. The toolchain file `build/cross/aarc
 ```bash
 mkdir -p generated.arm64
 cd generated.arm64
-../build/scripts/setupenv.sh --chroot-build --arch=arm64
 ../configure --arch=arm64 --chroot-build
 ../bake build --image-type=iso
 ```
@@ -152,7 +150,7 @@ Release build example:
 
 **`CMakeLists.txt not found`**: you're running `configure` from the repo root. `cd` into `generated.<arch>/` first.
 
-**`no chroot found at ./image_tree/chroot`**: you passed `--chroot-build` without running `setupenv.sh` first.
+**`no chroot found at ./image_tree/chroot`**: This should not happen normally as `configure --chroot-build` automatically invokes `setupenv.sh` when needed. If you see this, try running `../configure --arch=<arch> --chroot-build` again.
 
 **Build fails on missing `xres` or `rc`**: you skipped the buildtools step. Build it first (see above).
 
