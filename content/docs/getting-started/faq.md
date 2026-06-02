@@ -30,7 +30,7 @@ The core kits (Application, Interface, Storage, Support) work well enough to run
 
 ## Is there a package manager?
 
-Yes. But not a graphical one for now. Vitruvian ships as a Debian-derived image, so **apt** is the package manager. The full Debian archive (120,000+ packages) is available alongside native Vitruvian software.
+Yes. But not a graphical one for now. Vitruvian ships as a Debian-derived image, so **apt** is the package manager.
 
 ## Does Vitruvian run on this kernel or this platform?
 
