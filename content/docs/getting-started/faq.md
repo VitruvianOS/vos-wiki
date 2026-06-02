@@ -32,6 +32,14 @@ The core kits (Application, Interface, Storage, Support) work well enough to run
 
 Yes. Vitruvian ships as a Debian-derived image, so **apt** is the package manager. The full Debian archive (120,000+ packages) is available alongside native Vitruvian software. If it runs on Debian, it runs on Vitruvian.
 
+## Does Vitruvian run on this kernel or this platform?
+
+Vitruvian is based on a standard Linux kernel with the addition of the Nexus DKMS modules. Any not-too-ancient kernel should be able to run Vitruvian.
+
+## Will I be able to run this program or that other program on Vitruvian?
+
+Vitruvian can run BeOS/Haiku and CLI applications for now. Keep in mind the base system is a normal Linux kernel and applications with no UI will run just as in a normal Debian distribution (for example Node.js, binutils, parted, etc.). GTK and Qt ports are available but have not been integrated in the system yet.
+
 ## What filesystems are supported for booting?
 
 The reference boot filesystems are **XFS** and **SquashFS**, both with full extended attribute support:
