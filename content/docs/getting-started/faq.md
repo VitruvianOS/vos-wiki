@@ -40,6 +40,10 @@ Vitruvian is based on a standard Linux kernel with the addition of the Nexus DKM
 
 Vitruvian can run BeOS/Haiku and CLI applications for now. Keep in mind the base system is a normal Linux kernel and applications with no UI will run just as in a normal Debian distribution (for example Node.js, binutils, parted, etc.). GTK and Qt ports are available but have not been integrated in the system yet.
 
+## Is Vitruvian running on Xorg or Wayland?
+
+Vitruvian uses its own display server. The stack derives from the Haiku OS source code, although heavily modified to interface with modern Linux display and hardware accelerated APIs.
+
 ## What filesystems are supported for booting?
 
 The reference boot filesystems are **XFS** and **SquashFS**, both with full extended attribute support:
