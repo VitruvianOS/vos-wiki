@@ -52,15 +52,29 @@ git submodule update --init --recursive
 
 ## Build host tools
 
-Before any build, compile the host tools (`rc`, `xres`, `resattr`) needed by the rdef→resource pipeline. This step is shared across all architectures and only needs to be done once:
+Before any build, compile the host tools (`rc`, `xres`, `resattr`, `linkcatkeys`) needed by the rdef→resource and catalog pipelines. The buildtools live in their own top-level directory (`buildtools/`), separate from the per-arch build trees (`generated.<arch>/`). Only needs to be done once, shared across all architectures.
+
+```bash
+mkdir -p buildtools
+cd buildtools
+cmake -DBUILDTOOLS_MODE=1 .. -GNinja
+ninja
+cd ..
+```
+
+Or, using the `configure` shortcut, which does the same steps:
 
 ```bash
 ./configure --build-buildtools
 ```
 
-All subsequent `configure` calls need to be pointed at that tree with `--buildtools=PATH` (typically `../buildtools` from a build directory). Passing a missing or empty path is an error — this is intentional so a stale or partial buildtools tree can't silently break the main build.
+All subsequent `configure` calls need to be pointed at that tree with `--buildtools=PATH` (typically `--buildtools=../buildtools` from inside `generated.<arch>/`). Passing a missing or empty path is an error, this is intentional so a stale or partial buildtools tree can't silently break the main build.
 
 Skipping this will cause the main build to fail with "missing rc / xres binary".
+
+### Self-hosting on Vitruvian
+
+When building on a Vitruvian host (detected by presence of `/dev/nexus`), `--buildtools` is optional. If omitted, the configure script uses the resource toolchain installed system-wide from `PATH`.
 
 ## amd64 build
 
