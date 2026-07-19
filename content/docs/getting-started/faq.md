@@ -46,12 +46,12 @@ Vitruvian uses its own display server. The stack derives from the Haiku OS sourc
 
 ## What filesystems are supported for booting?
 
-The reference boot filesystems are **XFS** and **SquashFS**, both with full extended attribute support:
+The default boot filesystem is **ext4**, with **SquashFS** for live images:
 
-- **XFS** for standard desktop installs
-- **SquashFS** for live images and embedded targets
+- **ext4** for standard desktop and SBC installs
+- **SquashFS** for live ISOs
 
-Vitruvian also boots from **ext4** and most other Linux filesystems with extended attribute support. XFS and SquashFS are the tested and recommended options. The system can boot without xattr support, but with limited capabilities.
+Both support Linux extended attributes, which Vitruvian uses to carry BFS-style metadata. Full **XFS** and **Btrfs** support is on the roadmap and will land alongside the DriveSetup rewrite. The system can boot from most other Linux filesystems with xattr support, but ext4 is the tested default.
 
 ## Will it run in a virtual machine?
 

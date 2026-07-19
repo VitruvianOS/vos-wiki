@@ -30,7 +30,7 @@ sudo apt install -y \
   libjpeg-dev libncurses-dev libopenexr-dev libpng-dev libtiff-dev \
   libudev-dev libwebp-dev linux-headers-$(uname -r) \
   mtools ninja-build ovmf parted qemu-utils rsync squashfs-tools \
-  xfsprogs xorriso zlib1g-dev \
+  e2fsprogs xorriso zlib1g-dev \
   --fix-missing
 ```
 
@@ -95,7 +95,7 @@ cd generated.amd64
 ../bake build --image-type=iso
 ```
 
-For a raw GPT+XFS disk image instead of ISO:
+For a raw GPT+ext4 disk image instead of ISO:
 
 ```bash
 ../bake build --image-type=raw

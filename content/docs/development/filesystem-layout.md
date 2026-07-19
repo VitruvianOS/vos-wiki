@@ -9,9 +9,11 @@ Vitruvian runs on a standard Linux filesystem hierarchy but maps BeOS/Haiku path
 
 ## Boot filesystem
 
-The reference boot filesystems are **XFS** (standard desktop installs) and **SquashFS** (live images, embedded targets). Both support Linux extended attributes, which are required for the BeOS attribute store. Ext4 and most other Linux filesystems with xattr support also work.
+The default boot filesystem is **ext4** (raw disk images) and **SquashFS** (live images). Both support Linux extended attributes, which are required for the BeOS attribute store.
 
-XFS is recommended because it has no practical per-file xattr size limit, matching BeOS behavior most closely.
+Modern ext4 has grown into a good fit for our metadata needs. The `ea_inode` feature lets a single extended attribute occupy an entire inode instead of the file inode's spare space, so large attrs — embedded icons, MIME hints, cached metadata — do not spill or fragment. Combined with `large_dir` and `metadata_csum`, ext4 covers the whole BFS attribute store without special tuning. It also shrinks and grows, which matters for constrained boards and dual-boot resizes.
+
+Full support for **XFS** and **Btrfs** is on the roadmap, tied to the DriveSetup rewrite. Both will land as first-class install targets alongside ext4.
 
 ## Path mapping
 
