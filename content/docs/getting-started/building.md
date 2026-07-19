@@ -55,12 +55,10 @@ git submodule update --init --recursive
 Before any build, compile the host tools (`rc`, `xres`, `resattr`) needed by the rdef→resource pipeline. This step is shared across all architectures and only needs to be done once:
 
 ```bash
-mkdir -p buildtools
-cd buildtools
-cmake -DBUILDTOOLS_MODE=1 .. -GNinja
-ninja
-cd ..
+./configure --build-buildtools
 ```
+
+All subsequent `configure` calls need to be pointed at that tree with `--buildtools=PATH` (typically `../buildtools` from a build directory). Passing a missing or empty path is an error — this is intentional so a stale or partial buildtools tree can't silently break the main build.
 
 Skipping this will cause the main build to fail with "missing rc / xres binary".
 
@@ -68,14 +66,16 @@ Skipping this will cause the main build to fail with "missing rc / xres binary".
 
 ### Quick build (no image)
 
-For development. Compiles against host libraries, no chroot, no image:
+For development. Compiles against host libraries, no chroot, no image. On a native build the arch is autodetected from `uname -m`, so `--arch=` is optional:
 
 ```bash
 mkdir -p generated.amd64
 cd generated.amd64
-../configure --arch=amd64
+../configure --buildtools=../buildtools
 ninja
 ```
+
+Pass `--arch=<name>` explicitly for cross-compiles or if you want to override the autodetected value.
 
 Run individual targets:
 
@@ -91,7 +91,7 @@ This uses a debootstrap chroot so the resulting `.deb` is reproducible and insta
 ```bash
 mkdir -p generated.amd64
 cd generated.amd64
-../configure --arch=amd64 --chroot-build
+../configure --chroot-build --buildtools=../buildtools
 ../bake build --image-type=iso
 ```
 
