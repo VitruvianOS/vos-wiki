@@ -93,6 +93,7 @@ cd generated.amd64
 ../configure --buildtools=../buildtools
 ninja
 ```
+* on Fedora: `cmake -DBUILDTOOLS_MODE=1 -DFL_LIBRARY=/usr/lib64/libfltk.so .. -GNinja` (requires `fltk-devel`)
 
 Pass `--arch=<name>` explicitly for cross-compiles or if you want to override the autodetected value.
 
