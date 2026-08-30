@@ -46,18 +46,28 @@ Copyright (c) 2003-2026 Fabrice Bellard and the QEMU Project developers
   
 ```powershell
 qemu-system-x86_64.exe `
--cdrom vitruvian.img -boot menu=on `
+-accel whpx,kernel-irqchip=on `
+-drive file=vitruvian.img,format=raw,if=virtio `
+-boot menu=on `
 -m 8G -cpu host -smp sockets=1,cores=2,threads=2 `
 -netdev user,id=mynet,hostfwd=tcp::2222-:22 `
--device virtio-net-pci,netdev=mynet
+-device virtio-net-pci,netdev=mynet `
+-audiodev id=snd0,driver=dsound `
+-device ich9-intel-hda -device hda-output,audiodev=snd0
+
 ```
 
 ### Boot an ISO  
   
 ```powershell
 qemu-system-x86_64.exe `
--cdrom vitruvian.iso -boot menu=on `
+-accel whpx,kernel-irqchip=on `
+-drive file=vitruvian.iso,format=raw,if=virtio `
+-boot menu=on `
 -m 8G -cpu host -smp sockets=1,cores=2,threads=2 `
 -netdev user,id=mynet,hostfwd=tcp::2222-:22 `
--device virtio-net-pci,netdev=mynet
+-device virtio-net-pci,netdev=mynet `
+-audiodev id=snd0,driver=dsound `
+-device ich9-intel-hda -device hda-output,audiodev=snd0
+
 ```
