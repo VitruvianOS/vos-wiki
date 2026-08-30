@@ -15,6 +15,8 @@ Before proceeding, please ensure that your PC meets the following minimum requir
 **RAM:** At least 8 GB (16 GB recommended).  
 **Additional Software:** QEMU (Link to download: https://qemu.weilnetz.de/w64/qemu-w64-setup-20260811.exe).  
 
+Install QEMU and then follow the instructions below.
+
 # Post-Installation Steps
 **1. Add QEMU to Windows Environment Variables (PATH)**  
 ### To allow Windows and Vitruvian to run QEMU commands from any terminal window, you must add it to your system PATH:  
