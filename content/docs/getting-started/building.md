@@ -39,6 +39,27 @@ sudo apt install -y \
   --fix-missing
 ```
 
+### arm64 dependencies
+
+```bash
+sudo apt install -y \
+  autoconf automake bison build-essential cmake \
+  debhelper debootstrap dh-dkms dkms dosfstools elfutils flex \
+  generate-ninja git grub-common grub-efi-arm64-bin \
+  libbfd-dev libdrm-dev libdw-dev libdwarf-dev libelf-dev libfl-dev \
+  libfreetype6-dev libgif-dev libicns-dev libicu-dev libinput-dev \
+  libjpeg-dev libncurses-dev libopenexr-dev libpng-dev libtiff-dev \
+  libudev-dev libwebp-dev linux-headers-$(uname -r) \
+  mtools ninja-build ovmf parted qemu-utils rsync squashfs-tools \
+  e2fsprogs xorriso zlib1g-dev libbacktrace-dev libseat-dev \
+  libxkbcommon-dev mesa-utils libgl-dev libegl-dev libgbm-dev \
+  libglfw3-dev libgl1-mesa-dev libglu1-mesa-dev libpam0g-dev \
+  attr xattr libgstreamer-plugins-base1.0-dev libpipewire-0.3-dev \
+  libspa-0.2-dev devscripts dpkg-dev dh-make bluez libbluetooth-dev \
+  libnm-dev libsystemd-dev \
+  --fix-missing
+```
+
 ### arm64 cross-compile dependencies
 
 Everything from the amd64 list, plus:
