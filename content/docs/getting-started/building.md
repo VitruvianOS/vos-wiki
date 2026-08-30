@@ -30,7 +30,12 @@ sudo apt install -y \
   libjpeg-dev libncurses-dev libopenexr-dev libpng-dev libtiff-dev \
   libudev-dev libwebp-dev linux-headers-$(uname -r) \
   mtools ninja-build ovmf parted qemu-utils rsync squashfs-tools \
-  e2fsprogs xorriso zlib1g-dev \
+  e2fsprogs xorriso zlib1g-dev libbacktrace-dev libseat-dev \
+  libxkbcommon-dev mesa-utils libgl-dev libegl-dev libgbm-dev \
+  libglfw3-dev libgl1-mesa-dev libglu1-mesa-dev libpam0g-dev \
+  attr xattr libgstreamer-plugins-base1.0-dev libpipewire-0.3-dev \
+  libspa-0.2-dev devscripts dpkg-dev dh-make bluez libbluetooth-dev \
+  libnm-dev libsystemd-dev \
   --fix-missing
 ```
 
