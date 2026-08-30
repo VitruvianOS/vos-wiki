@@ -30,7 +30,9 @@ qemu-system-x86_64 \
   -cdrom vitruvian.img -boot menu=on \
   -m 8G -cpu host -smp sockets=1,cores=2,threads=2 --enable-kvm \
   -netdev user,id=mynet,hostfwd=tcp::2222-:22 \
-  -device virtio-net-pci,netdev=mynet
+  -device virtio-net-pci,netdev=mynet \
+  -audiodev id=snd0,driver=pa -device ich9-intel-hda  \
+  -device hda-output,audiodev=snd0
 ```
 
 Adjust `-m` (RAM in MB) and `-smp` (CPU cores) to your host. Remove `-enable-kvm` if KVM is unavailable.
@@ -42,7 +44,9 @@ qemu-system-x86_64 \
   -cdrom vitruvian.iso -boot menu=on \
   -m 8G -cpu host -smp sockets=1,cores=2,threads=2 --enable-kvm \
   -netdev user,id=mynet,hostfwd=tcp::2222-:22 \
-  -device virtio-net-pci,netdev=mynet
+  -device virtio-net-pci,netdev=mynet \
+  -audiodev id=snd0,driver=pa -device ich9-intel-hda  \
+  -device hda-output,audiodev=snd0
 ```
 
 ### Useful flags
