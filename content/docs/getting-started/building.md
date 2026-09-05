@@ -35,7 +35,7 @@ sudo apt install -y \
   libglfw3-dev libgl1-mesa-dev libglu1-mesa-dev libpam0g-dev \
   attr xattr libgstreamer-plugins-base1.0-dev libpipewire-0.3-dev \
   libspa-0.2-dev devscripts dpkg-dev dh-make bluez libbluetooth-dev \
-  libnm-dev libsystemd-dev \
+  libnm-dev libsystemd-dev libapt-pkg-dev \
   --fix-missing
 ```
 
@@ -56,7 +56,7 @@ sudo apt install -y \
   libglfw3-dev libgl1-mesa-dev libglu1-mesa-dev libpam0g-dev \
   attr xattr libgstreamer-plugins-base1.0-dev libpipewire-0.3-dev \
   libspa-0.2-dev devscripts dpkg-dev dh-make bluez libbluetooth-dev \
-  libnm-dev libsystemd-dev \
+  libnm-dev libsystemd-dev libapt-pkg-dev \
   --fix-missing
 ```
 
